@@ -34,10 +34,22 @@ RSpec.describe ArticlesController do
   end
 
   describe 'GET show' do
-    skip 'is successful' do
+    before(:each) { get :show, id: article.id }
+    it 'is successful' do
+      expect(response.status).to eq(200)
     end
 
-    skip 'renders a JSON response' do
+    it 'renders a JSON response' do
+      article_response = JSON.parse(response.body)
+      expect(article_response).not_to be_nil
+      expect(article_response['title']).to eq(article.title)
+    end
+
+    # this is how we test for whether we got a single item back
+    # if it's an array of items, not a hash, it will fail this test
+    it 'renders a hash' do
+      article_response = JSON.parse(response.body)
+      expect(article_response).to a_kind_of(Hash)
     end
   end
 
