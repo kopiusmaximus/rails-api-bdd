@@ -49,16 +49,31 @@ RSpec.describe 'Articles API' do
   end
 
   describe 'POST /articles' do
-    skip 'creates an article' do
+    it 'creates an article' do
+      post '/articles', article: article_params, format: :json
+
+      expect(response).to be_success
+
+      article_response = JSON.parse(response.body)
+      expect(article_response['id']).not_to be_nil
+      expect(article_response['title']).to eq(article_params[:title])
     end
   end
 
   describe 'PATCH /articles/:id' do
+    # might be better practice to define this above
     def article_diff
       { title: 'Two Stupid Tricks' }
     end
 
-    skip 'updates an article' do
+    it 'updates an article' do
+      patch "/articles/#{article.id}", article: article_diff, format: :json
+
+      expect(response).to be_success
+
+      article_response = JSON(parse(response.body))
+      expect(article_response['id']).to eq(article[:id])
+      expect(article_response['title']).to eq(article_diff[:title])
     end
   end
 

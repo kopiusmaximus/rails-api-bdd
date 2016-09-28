@@ -58,14 +58,18 @@ RSpec.describe ArticlesController do
       post :create, article: article_params, format: :json
     end
 
-    skip 'is successful' do
+    it 'is successful' do
+      expect(response.status).to eq(201)
     end
 
-    skip 'renders a JSON response' do
+    it 'renders a JSON response' do
+      article_response = JSON.parse(response.body)
+      expect(article_response).not_to be_nil
     end
   end
 
   describe 'PATCH update' do
+    # again, it may be better practice to define article_diff above
     def article_diff
       { title: 'Two Stupid Tricks' }
     end
@@ -74,10 +78,13 @@ RSpec.describe ArticlesController do
       patch :update, id: article.id, article: article_diff, format: :json
     end
 
-    skip 'is successful' do
+    it 'is successful' do
+      expect(response.status).to eq(200)
     end
 
-    skip 'renders a JSON response' do
+    it 'renders a JSON response' do
+      article_response = JSON.parse(response.body)
+      expect(article_response).not_to be_nil
     end
   end
 
