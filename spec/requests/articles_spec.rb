@@ -71,14 +71,18 @@ RSpec.describe 'Articles API' do
 
       expect(response).to be_success
 
-      article_response = JSON(parse(response.body))
+      article_response = JSON.parse(response.body)
       expect(article_response['id']).to eq(article[:id])
       expect(article_response['title']).to eq(article_diff[:title])
     end
   end
 
   describe 'DELETE /articles/:id' do
-    skip 'deletes an article' do
+    it 'deletes an article' do
+      delete "/articles/#{article.id}"
+
+      expect(response).to be_success
+      expect(response.body).to be_empty
     end
   end
 end
